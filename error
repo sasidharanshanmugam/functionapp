@@ -1,0 +1,7 @@
+ dynamic "identity" {
+    for_each = var.set_system_assigned_identity == true && length(var.managed_identities) > 0 ? { "type" : "SystemAssigned, UserAssigned" } : length(var.managed_identities) > 0 ? { "type" : "UserAssigned" } : var.set_system_assigned_identity == true ? { "type" : "SystemAssigned" } : {}
+    content {
+      type         = identity.value
+      identity_ids = length(var.managed_identities) > 0 ? var.managed_identities : null
+    }
+  }
